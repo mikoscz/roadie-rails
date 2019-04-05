@@ -8,6 +8,7 @@ module Roadie
         :external_asset_providers,
         :keep_uninlinable_css,
         :url_options,
+        :merge_media_queries,
       ]
       private_constant :ATTRIBUTE_NAMES
       attr_reader(*ATTRIBUTE_NAMES)
@@ -20,6 +21,7 @@ module Roadie
         self.external_asset_providers = options[:external_asset_providers]
         self.keep_uninlinable_css     = options[:keep_uninlinable_css]
         self.url_options              = options[:url_options]
+        self.merge_media_queries      = options[:merge_media_queries]
       end
 
       def url_options=(options)
@@ -36,6 +38,10 @@ module Roadie
 
       def keep_uninlinable_css=(bool)
         @keep_uninlinable_css = bool
+      end
+
+      def merge_media_queries=(bool)
+        @merge_media_queries = bool
       end
 
       def asset_providers=(providers)
@@ -58,6 +64,7 @@ module Roadie
 
       def apply_to(document)
         document.url_options = url_options
+        document.merge_media_queries = merge_media_queries
         document.before_transformation = before_transformation
         document.after_transformation = after_transformation
 
@@ -101,6 +108,9 @@ module Roadie
 
         self.keep_uninlinable_css =
           options[:keep_uninlinable_css] if options.has_key?(:keep_uninlinable_css)
+
+        self.merge_media_queries =
+          options[:merge_media_queries] if options.has_key?(:merge_media_queries)
 
         self.url_options = combine_hash(
           url_options, options[:url_options]
